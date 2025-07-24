@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Home, Users, Calendar, ImageIcon, Newspaper, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -37,6 +38,18 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
+            <div className="flex items-center space-x-4 ml-4">
+              <Link to="/signin">
+                <Button variant="ghost" className="text-white hover:text-rcb-gold hover:bg-rcb-red/20">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-rcb-red hover:bg-rcb-red/90 text-white">
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Mobile menu button */}
