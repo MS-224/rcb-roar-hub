@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Home, Users, Calendar, ImageIcon, Newspaper, ShoppingBag } from 'lucide-react';
+import { Menu, X, Home, Users, Calendar, ImageIcon, Newspaper, ShoppingBag, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import rcbLogo from '@/assets/rcb-logo.png';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [cartItems] = useState(2); // Mock cart items count
 
   const navItems = [
     { name: 'Home', href: '#home', icon: Home },
@@ -20,12 +23,10 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-rcb-red to-rcb-gold rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">RCB</span>
-            </div>
+          <Link to="/" className="flex items-center space-x-2">
+            <img src={rcbLogo} alt="RCB Logo" className="w-10 h-10 object-contain" />
             <span className="text-white font-bold text-xl hidden sm:block">Royal Challengers Bangalore</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -39,6 +40,17 @@ const Navigation = () => {
               </a>
             ))}
             <div className="flex items-center space-x-4 ml-4">
+              {/* Cart Icon */}
+              {cartItems > 0 && (
+                <Link to="/shop" className="relative">
+                  <Button variant="ghost" className="text-white hover:text-rcb-gold hover:bg-rcb-red/20">
+                    <ShoppingCart className="h-5 w-5" />
+                  </Button>
+                  <Badge className="absolute -top-2 -right-2 bg-rcb-red text-white min-w-[1.25rem] h-5 flex items-center justify-center text-xs">
+                    {cartItems}
+                  </Badge>
+                </Link>
+              )}
               <Link to="/signin">
                 <Button variant="ghost" className="text-white hover:text-rcb-gold hover:bg-rcb-red/20">
                   Sign In

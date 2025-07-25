@@ -22,16 +22,6 @@ const GallerySection = () => {
       date: '2024-03-10'
     },
     {
-      id: 2,
-      type: 'video',
-      category: 'matches',
-      title: 'Match Winning Six by Maxwell',
-      url: '/placeholder.svg',
-      likes: 8900,
-      date: '2024-03-08',
-      duration: '0:45'
-    },
-    {
       id: 3,
       type: 'image',
       category: 'training',
@@ -90,7 +80,7 @@ const GallerySection = () => {
   ];
 
   const filteredItems = galleryItems.filter(item => 
-    selectedCategory === 'all' || item.category === selectedCategory
+    item.type === 'image' && (selectedCategory === 'all' || item.category === selectedCategory)
   );
 
   const formatCategory = (category: string) => {

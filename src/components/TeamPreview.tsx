@@ -39,55 +39,52 @@ const TeamPreview = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-12">
           {captains.map((captain) => (
-            <Card key={captain.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-rcb-red/50">
-              <CardContent className="p-8">
-                <div className="relative mb-6">
-                  <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-r from-rcb-red to-rcb-gold p-1">
-                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                      <span className="text-4xl font-bold text-rcb-red">
-                        {captain.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="absolute -top-2 -right-2">
-                    <Badge className="bg-rcb-gold text-rcb-black">
-                      <Star className="h-4 w-4 mr-1" />
-                      Captain
-                    </Badge>
-                  </div>
+            <Card key={captain.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-rcb-red/50 overflow-hidden h-96">
+              <div className="relative h-full bg-gradient-to-br from-rcb-red/20 via-rcb-gold/10 to-rcb-black/30 flex items-end">
+                {/* Background Image Placeholder */}
+                <div className="absolute inset-0 bg-gradient-to-t from-rcb-black/80 via-rcb-red/20 to-transparent"></div>
+                
+                {/* Jersey Number - Left */}
+                <div className="absolute top-4 left-4 w-12 h-12 bg-rcb-gold rounded-full flex items-center justify-center">
+                  <span className="text-rcb-black font-bold text-lg">18</span>
                 </div>
                 
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-rcb-red transition-colors">
+                {/* Captain Badge - Right */}
+                <div className="absolute top-4 right-4">
+                  <Badge className="bg-rcb-red text-white">
+                    <Star className="h-4 w-4 mr-1" />
+                    Captain
+                  </Badge>
+                </div>
+                
+                {/* Player Info */}
+                <div className="relative z-10 p-6 w-full text-white">
+                  <h3 className="text-2xl font-bold mb-2 group-hover:text-rcb-gold transition-colors">
                     {captain.name}
                   </h3>
-                  <div className="flex justify-center gap-2 mb-4">
-                    <Badge variant="outline" className="border-rcb-gold text-rcb-gold">
+                  <div className="flex gap-2 mb-4">
+                    <Badge variant="outline" className="border-rcb-gold text-rcb-gold bg-rcb-black/50">
                       {captain.role}
                     </Badge>
-                    <Badge variant="outline" className="border-rcb-red text-rcb-red">
+                    <Badge variant="outline" className="border-white text-white bg-rcb-black/50">
                       {captain.team}
                     </Badge>
                   </div>
                   
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
-                    {captain.description}
-                  </p>
-                  
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-muted-foreground">Matches</div>
-                      <div className="text-2xl font-bold text-rcb-red">{captain.matches}</div>
+                    <div className="bg-rcb-black/50 rounded-lg p-3 backdrop-blur-sm">
+                      <div className="text-rcb-gold">Matches</div>
+                      <div className="text-xl font-bold text-white">{captain.matches}</div>
                     </div>
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-muted-foreground">Runs</div>
-                      <div className="text-2xl font-bold text-rcb-red">{captain.runs}</div>
+                    <div className="bg-rcb-black/50 rounded-lg p-3 backdrop-blur-sm">
+                      <div className="text-rcb-gold">Runs</div>
+                      <div className="text-xl font-bold text-white">{captain.runs}</div>
                     </div>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>

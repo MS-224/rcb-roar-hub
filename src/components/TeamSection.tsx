@@ -1,44 +1,48 @@
 import { useState } from 'react';
-import { Search, Filter, Users, Star } from 'lucide-react';
+import { Search, Filter, Star, Users, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import PlayerModal from './PlayerModal';
 
 const TeamSection = () => {
   const [selectedTeam, setSelectedTeam] = useState('men');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
-  // Mock data - in real app, this would come from API
+  // Mock data for players with extended info
   const menPlayers = [
-    { id: 1, name: 'Virat Kohli', role: 'Batter', image: '/placeholder.svg', matches: 245, runs: 7263, captain: true },
-    { id: 2, name: 'Faf du Plessis', role: 'Batter', image: '/placeholder.svg', matches: 124, runs: 3890, captain: false },
-    { id: 3, name: 'Glenn Maxwell', role: 'All-Rounder', image: '/placeholder.svg', matches: 103, runs: 2771, captain: false },
-    { id: 4, name: 'Mohammed Siraj', role: 'Bowler', image: '/placeholder.svg', matches: 93, wickets: 91, captain: false },
-    { id: 5, name: 'Wanindu Hasaranga', role: 'All-Rounder', image: '/placeholder.svg', matches: 34, wickets: 43, captain: false },
-    { id: 6, name: 'Josh Hazlewood', role: 'Bowler', image: '/placeholder.svg', matches: 12, wickets: 12, captain: false },
-    { id: 7, name: 'Dinesh Karthik', role: 'Wicket-Keeper', image: '/placeholder.svg', matches: 232, runs: 4127, captain: false },
-    { id: 8, name: 'Harshal Patel', role: 'Bowler', image: '/placeholder.svg', matches: 67, wickets: 65, captain: false },
+    { id: 1, name: 'Virat Kohli', role: 'Batter', jerseyNumber: 18, matches: 245, runs: 7263, wickets: 4, isCaptain: false, age: 35, average: 37.25, strikeRate: 131.61, bestScore: "113*", country: "India" },
+    { id: 2, name: 'Faf du Plessis', role: 'Batter', jerseyNumber: 19, matches: 100, runs: 2935, wickets: 0, isCaptain: true, age: 39, average: 31.26, strikeRate: 127.78, bestScore: "96", country: "South Africa" },
+    { id: 3, name: 'Glenn Maxwell', role: 'All-rounder', jerseyNumber: 32, matches: 123, runs: 2771, wickets: 9, isCaptain: false, age: 35, average: 25.88, strikeRate: 154.67, bestScore: "78", country: "Australia" },
+    { id: 4, name: 'Mohammed Siraj', role: 'Bowler', jerseyNumber: 73, matches: 93, runs: 183, wickets: 93, isCaptain: false, age: 30, average: 8.72, strikeRate: 115.45, bestScore: "14*", country: "India" },
+    { id: 5, name: 'Dinesh Karthik', role: 'Wicket-keeper', jerseyNumber: 7, matches: 232, runs: 4842, wickets: 0, isCaptain: false, age: 39, average: 25.89, strikeRate: 135.36, bestScore: "83*", country: "India" },
+    { id: 6, name: 'Harshal Patel', role: 'Bowler', jerseyNumber: 23, matches: 69, runs: 123, wickets: 77, isCaptain: false, age: 33, average: 7.42, strikeRate: 120.15, bestScore: "17", country: "India" }
   ];
 
   const womenPlayers = [
-    { id: 1, name: 'Smriti Mandhana', role: 'Batter', image: '/placeholder.svg', matches: 89, runs: 3267, captain: true },
-    { id: 2, name: 'Ellyse Perry', role: 'All-Rounder', image: '/placeholder.svg', matches: 345, runs: 6453, captain: false },
-    { id: 3, name: 'Sophie Devine', role: 'All-Rounder', image: '/placeholder.svg', matches: 298, runs: 5897, captain: false },
-    { id: 4, name: 'Richa Ghosh', role: 'Wicket-Keeper', image: '/placeholder.svg', matches: 23, runs: 456, captain: false },
-    { id: 5, name: 'Poonam Yadav', role: 'Bowler', image: '/placeholder.svg', matches: 123, wickets: 134, captain: false },
-    { id: 6, name: 'Shafali Verma', role: 'Batter', image: '/placeholder.svg', matches: 67, runs: 1876, captain: false },
+    { id: 7, name: 'Smriti Mandhana', role: 'Batter', jerseyNumber: 18, matches: 89, runs: 3267, wickets: 2, isCaptain: true, age: 27, average: 41.78, strikeRate: 119.8, bestScore: "87", country: "India" },
+    { id: 8, name: 'Ellyse Perry', role: 'All-rounder', jerseyNumber: 3, matches: 134, runs: 4895, wickets: 78, isCaptain: false, age: 33, average: 42.65, strikeRate: 125.34, bestScore: "112*", country: "Australia" },
+    { id: 9, name: 'Sophie Devine', role: 'All-rounder', jerseyNumber: 13, matches: 156, runs: 5421, wickets: 67, isCaptain: false, age: 34, average: 39.87, strikeRate: 133.44, bestScore: "105", country: "New Zealand" },
+    { id: 10, name: 'Renuka Singh', role: 'Bowler', jerseyNumber: 24, matches: 45, runs: 89, wickets: 67, isCaptain: false, age: 27, average: 4.78, strikeRate: 98.9, bestScore: "12", country: "India" },
+    { id: 11, name: 'Richa Ghosh', role: 'Wicket-keeper', jerseyNumber: 9, matches: 34, runs: 876, wickets: 0, isCaptain: false, age: 21, average: 28.9, strikeRate: 128.76, bestScore: "64*", country: "India" },
+    { id: 12, name: 'Sabbhineni Meghana', role: 'Batter', jerseyNumber: 16, matches: 28, runs: 654, wickets: 1, isCaptain: false, age: 24, average: 26.34, strikeRate: 115.67, bestScore: "73", country: "India" }
   ];
 
   const currentPlayers = selectedTeam === 'men' ? menPlayers : womenPlayers;
-  const roles = ['all', 'Batter', 'Bowler', 'All-Rounder', 'Wicket-Keeper'];
+  const roles = ['all', 'Batter', 'Bowler', 'All-rounder', 'Wicket-keeper'];
 
   const filteredPlayers = currentPlayers.filter(player => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === 'all' || player.role === selectedRole;
     return matchesSearch && matchesRole;
   });
+
+  const handlePlayerClick = (player) => {
+    setSelectedPlayer(player);
+  };
 
   return (
     <section id="team" className="py-20 bg-gradient-to-b from-background to-muted/30">
@@ -111,52 +115,58 @@ const TeamSection = () => {
         {/* Players Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPlayers.map((player) => (
-            <Card key={player.id} className="group hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-rcb-red/50">
-              <CardContent className="p-6">
-                <div className="relative mb-4">
-                  <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-rcb-red to-rcb-gold p-1">
-                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                      <Users className="h-12 w-12 text-rcb-red" />
-                    </div>
-                  </div>
-                  {player.captain && (
-                    <div className="absolute -top-2 -right-2">
-                      <Badge className="bg-rcb-gold text-rcb-black">
-                        <Star className="h-3 w-3 mr-1" />
-                        Captain
-                      </Badge>
-                    </div>
-                  )}
+            <Card 
+              key={player.id} 
+              className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-rcb-red/50 cursor-pointer overflow-hidden h-80"
+              onClick={() => handlePlayerClick(player)}
+            >
+              <div className="relative h-full bg-gradient-to-br from-rcb-red/30 via-rcb-gold/20 to-rcb-black/40">
+                {/* Full-size player image background */}
+                <div className="absolute inset-0 bg-gradient-to-t from-rcb-black/90 via-rcb-black/30 to-transparent"></div>
+                
+                {/* Jersey Number - Top Left */}
+                <div className="absolute top-3 left-3 w-10 h-10 bg-rcb-gold rounded-full flex items-center justify-center">
+                  <span className="text-rcb-black font-bold text-sm">{player.jerseyNumber}</span>
                 </div>
                 
-                <div className="text-center">
-                  <h3 className="text-lg font-bold mb-1 group-hover:text-rcb-red transition-colors">
-                    {player.name}
-                  </h3>
-                  <Badge variant="outline" className="mb-3 border-rcb-gold text-rcb-gold">
+                {/* Role - Top Right */}
+                <div className="absolute top-3 right-3">
+                  <Badge className="bg-rcb-red text-white text-xs">
                     {player.role}
                   </Badge>
-                  
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex justify-between">
-                      <span>Matches:</span>
-                      <span className="font-semibold">{player.matches}</span>
-                    </div>
-                    {player.runs && (
-                      <div className="flex justify-between">
-                        <span>Runs:</span>
-                        <span className="font-semibold text-rcb-red">{player.runs}</span>
-                      </div>
-                    )}
-                    {player.wickets && (
-                      <div className="flex justify-between">
-                        <span>Wickets:</span>
-                        <span className="font-semibold text-rcb-red">{player.wickets}</span>
-                      </div>
-                    )}
+                </div>
+                
+                {/* Captain Badge - If Captain */}
+                {player.isCaptain && (
+                  <div className="absolute top-12 right-3">
+                    <Badge className="bg-rcb-gold text-rcb-black text-xs">
+                      <Star className="h-3 w-3 mr-1" />
+                      Captain
+                    </Badge>
+                  </div>
+                )}
+                
+                {/* Player Image Placeholder */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-r from-rcb-red to-rcb-gold flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">
+                      {player.name.split(' ').map(n => n[0]).join('')}
+                    </span>
                   </div>
                 </div>
-              </CardContent>
+                
+                {/* Player Name - Bottom */}
+                <div className="absolute bottom-4 left-4 right-4 text-center">
+                  <h3 className="text-lg font-bold text-white group-hover:text-rcb-gold transition-colors">
+                    {player.name}
+                  </h3>
+                  <div className="flex justify-center gap-4 mt-2 text-xs text-gray-300">
+                    <span>Matches: {player.matches}</span>
+                    {player.runs > 0 && <span>Runs: {player.runs}</span>}
+                    {player.wickets > 0 && <span>Wickets: {player.wickets}</span>}
+                  </div>
+                </div>
+              </div>
             </Card>
           ))}
         </div>
@@ -168,6 +178,14 @@ const TeamSection = () => {
           </div>
         )}
       </div>
+
+      {/* Player Modal */}
+      {selectedPlayer && (
+        <PlayerModal 
+          player={selectedPlayer} 
+          onClose={() => setSelectedPlayer(null)} 
+        />
+      )}
     </section>
   );
 };
