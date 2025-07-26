@@ -64,24 +64,13 @@ const TeamPreview = () => {
                   <h3 className="text-2xl font-bold mb-2 group-hover:text-rcb-gold transition-colors">
                     {captain.name}
                   </h3>
-                  <div className="flex gap-2 mb-4">
+                  <div className="flex gap-2">
                     <Badge variant="outline" className="border-rcb-gold text-rcb-gold bg-rcb-black/50">
                       {captain.role}
                     </Badge>
                     <Badge variant="outline" className="border-white text-white bg-rcb-black/50">
                       {captain.team}
                     </Badge>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-rcb-black/50 rounded-lg p-3 backdrop-blur-sm">
-                      <div className="text-rcb-gold">Matches</div>
-                      <div className="text-xl font-bold text-white">{captain.matches}</div>
-                    </div>
-                    <div className="bg-rcb-black/50 rounded-lg p-3 backdrop-blur-sm">
-                      <div className="text-rcb-gold">Runs</div>
-                      <div className="text-xl font-bold text-white">{captain.runs}</div>
-                    </div>
                   </div>
                 </div>
               </div>
