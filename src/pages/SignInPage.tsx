@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +19,37 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rcb-black via-rcb-red/10 to-rcb-gold/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-rcb-black via-rcb-red/10 to-rcb-gold/10">
+      {/* Back Button */}
+      <div className="absolute top-4 left-4 z-10">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="text-white hover:bg-white/10"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Button>
+      </div>
+      
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Column - Branding */}
+          <div className="hidden lg:block text-center text-white">
+            <div className="w-32 h-32 bg-gradient-to-r from-rcb-red to-rcb-gold rounded-full flex items-center justify-center mx-auto mb-8">
+              <span className="text-white font-bold text-5xl">RCB</span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-rcb-red to-rcb-gold bg-clip-text text-transparent">
+              Royal Challengers Bangalore
+            </h1>
+            <p className="text-xl text-white/80 max-w-md mx-auto">
+              Join the RCB family and experience cricket like never before. 
+              Access exclusive content, book tickets, and stay connected with your favorite team.
+            </p>
+          </div>
+          
+          {/* Right Column - Sign In Form */}
+          <Card className="w-full max-w-md mx-auto lg:mx-0">
         <CardHeader className="text-center">
           <div className="w-16 h-16 bg-gradient-to-r from-rcb-red to-rcb-gold rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold text-2xl">RCB</span>
@@ -107,7 +137,9 @@ const SignInPage = () => {
             </div>
           </form>
         </CardContent>
-      </Card>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

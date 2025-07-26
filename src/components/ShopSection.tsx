@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart, Star, Filter, Search, Truck, Shield, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import ShoppingCartModal from './ShoppingCart';
 
 const ShopSection = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const categories = ['all', 'jerseys', 'caps', 'accessories', 'collectibles'];
 
@@ -131,20 +135,67 @@ const ShopSection = () => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
-  const addToCart = (productId: number) => {
-    setCartItems(prev => [...prev, productId]);
+  const addToCart = (product: any, size?: string) => {
+    const cartItem = {
+      id: Date.now(), // Simple ID generation
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      size: size || 'One Size',
+      image: product.image
+    };
+    setCartItems(prev => [...prev, cartItem]);
+    setIsCartOpen(true);
+  };
+
+  const updateQuantity = (id: number, quantity: number) => {
+    if (quantity <= 0) {
+      removeItem(id);
+      return;
+    }
+    setCartItems(prev => prev.map(item => 
+      item.id === id ? { ...item, quantity } : item
+    ));
+  };
+
+  const removeItem = (id: number) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    navigate('/checkout');
   };
 
   return (
     <section id="shop" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-rcb-red to-rcb-gold bg-clip-text text-transparent">
-            RCB STORE
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Show your RCB pride with official merchandise and collectibles
-          </p>
+          <div className="flex items-center justify-between max-w-4xl mx-auto mb-6">
+            <div></div>
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-rcb-red to-rcb-gold bg-clip-text text-transparent">
+                RCB STORE
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Show your RCB pride with official merchandise and collectibles
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setIsCartOpen(true)}
+              className="relative border-rcb-gold text-rcb-gold hover:bg-rcb-gold hover:text-rcb-black"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Cart
+              {cartItems.length > 0 && (
+                <Badge className="absolute -top-2 -right-2 bg-rcb-red text-white">
+                  {cartItems.length}
+                </Badge>
+              )}
+            </Button>
+          </div>
         </div>
 
         {/* Search and Filters */}
@@ -271,7 +322,7 @@ const ShopSection = () => {
                 {/* Add to Cart Button */}
                 <Button 
                   className="w-full bg-rcb-red hover:bg-rcb-red/90 text-white"
-                  onClick={() => addToCart(product.id)}
+                  onClick={() => addToCart(product)}
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Add to Cart
@@ -311,6 +362,16 @@ const ShopSection = () => {
           </Button>
         </div>
       </div>
+
+      {/* Shopping Cart Modal */}
+      <ShoppingCartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
+        onCheckout={handleCheckout}
+      />
     </section>
   );
 };

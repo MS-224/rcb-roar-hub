@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Calendar, User, ArrowRight, TrendingUp, MessageSquare, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const NewsSection = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categories = ['all', 'team-news', 'match-reports', 'transfers', 'interviews'];
@@ -177,7 +179,10 @@ const NewsSection = () => {
                       <span>{filteredNews[0].readTime}</span>
                     </div>
                     
-                    <Button className="bg-rcb-red hover:bg-rcb-red/90 text-white">
+                    <Button 
+                      onClick={() => navigate(`/news/${filteredNews[0].id}`)}
+                      className="bg-rcb-red hover:bg-rcb-red/90 text-white"
+                    >
                       Read More
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -245,6 +250,7 @@ const NewsSection = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
+                  onClick={() => navigate(`/news/${article.id}`)}
                   className="w-full border-rcb-gold text-rcb-gold hover:bg-rcb-gold hover:text-rcb-black"
                 >
                   Read Full Article

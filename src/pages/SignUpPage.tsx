@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,8 +31,51 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rcb-black via-rcb-red/10 to-rcb-gold/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-rcb-black via-rcb-red/10 to-rcb-gold/10">
+      {/* Back Button */}
+      <div className="absolute top-4 left-4 z-10">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="text-white hover:bg-white/10"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Button>
+      </div>
+      
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Column - Branding */}
+          <div className="hidden lg:block text-center text-white">
+            <div className="w-32 h-32 bg-gradient-to-r from-rcb-red to-rcb-gold rounded-full flex items-center justify-center mx-auto mb-8">
+              <span className="text-white font-bold text-5xl">RCB</span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-rcb-red to-rcb-gold bg-clip-text text-transparent">
+              Royal Challengers Bangalore
+            </h1>
+            <p className="text-xl text-white/80 max-w-md mx-auto mb-6">
+              Be part of the RCB legacy. Create your account to access exclusive content, 
+              early ticket bookings, and connect with fellow cricket enthusiasts.
+            </p>
+            <div className="space-y-4 text-white/60">
+              <div className="flex items-center justify-center space-x-2">
+                <span className="w-2 h-2 bg-rcb-red rounded-full"></span>
+                <span>Exclusive match highlights</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <span className="w-2 h-2 bg-rcb-gold rounded-full"></span>
+                <span>Priority ticket booking</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <span className="w-2 h-2 bg-rcb-red rounded-full"></span>
+                <span>Member-only merchandise</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Right Column - Sign Up Form */}
+          <Card className="w-full max-w-md mx-auto lg:mx-0">
         <CardHeader className="text-center">
           <div className="w-16 h-16 bg-gradient-to-r from-rcb-red to-rcb-gold rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold text-2xl">RCB</span>
@@ -188,7 +232,9 @@ const SignUpPage = () => {
             </div>
           </form>
         </CardContent>
-      </Card>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
